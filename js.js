@@ -232,8 +232,7 @@ function hideNone() {
   });
 }
 
-//This still doesnt work smh crying in the club - sorting
-
+//Sorting isn't working but i now know that it's because the KneelessFucker is an object and I need an array to sort.
 
 
 //modal

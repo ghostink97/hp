@@ -18,30 +18,33 @@
         </div>
         <h1 class="weird">1991 Hogwarts Student List</h1>
         <nav>
-            <ul>
-                <li><button class="all">Show All</button></li>
-                <li><button class="gryff">Gryffindor</button></li>
-                <li><button class="huff">Hufflepuff</button></li>
-                <li><button class="rav">Ravenclaw</button></li>
-                <li><button class="slyth">Slytherin</button></li>
-            </ul>
-            <select name="sort" id="sortby">Sort by:
-                <option value="House" id="selectHouse">House</option>
-                <option value="First Name" id="selectFirst">First Name</option>
-                <option value="Last Name" id="selectLast">Last Name</option>
-            </select>
-            <p id="demo"></p>
+
+            <a href="#" class="all">Show All</a>
+            <a href="#" class="gryff">Gryffindor</a>
+            <a href="#" class="huff">Hufflepuff</a>
+            <a href="#" class="rav">Ravenclaw</a>
+            <a href="#" class="slyth" id="lastNav">Slytherin</a>
+
         </nav>
+        <div id="sortthing">
+            <h4>sort by:</h2>
+                <select name="sort" id="sortby">
+                    <option value="House" id="selectHouse">House</option>
+                    <option value="First Name" id="selectFirst">First Name</option>
+                    <option value="Last Name" id="selectLast">Last Name</option>
+                </select>
+                <p id="demo"></p>
+        </div>
     </header>
     <main id="details-main">
         <template>
             <article class="post">
-                <img src="" alt="" class="imgs">
                 <h2 class="name">Student Name</h1>
                     <img src="" alt="hogwarts house crest" class="houseimg">
-                    <button>More Info</button>
+                    <button id="moreinf">More Info</button>
             </article>
         </template>
+
     </main>
     <script src="js.js"></script>
 </body>
