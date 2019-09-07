@@ -1,0 +1,66 @@
+@import url("https://use.typekit.net/oii6arb.css");
+
+/******************** here we go motherfuckers******************/
+body {
+  font-family: "Times New Roman", Times, serif;
+  background-color: rgb(238, 217, 172);
+}
+
+.inactive {
+  display: none;
+}
+
+.weird {
+  font-family: tilda-petite, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 5em;
+  margin-top: 0;
+  padding-top: 0;
+  text-align: center;
+}
+
+#logo {
+  margin-top: 3em;
+  max-width: 50%;
+}
+
+#hoax {
+  display: block;
+  text-align: center;
+}
+
+img {
+  max-width: 50%;
+}
+
+#details-main {
+  margin-top: 1em;
+  text-align: center;
+}
+
+.houseimg {
+  width: 20%;
+}
+
+@media screen and (min-width: 700px) {
+  img {
+    width: 30%;
+  }
+
+  body {
+    width: 70vw;
+    margin: auto;
+  }
+  #details-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1em;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  img {
+    width: 10%;
+  }
+}
