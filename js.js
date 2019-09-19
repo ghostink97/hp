@@ -12,11 +12,17 @@ const gryfindorBtn = document.querySelector(".gryff");
 const allBtn = document.querySelector(".all");
 
 let data;
-
+/*
+const names = data.fullname.split(" ");
+const firstName = names[0];
+const middleName = names.slice(1, names.length);
+const lastName = names[names.length - 1];
+*/
 function start() {
   console.log("Fuckin' Ready");
   loadJSON();
 }
+
 //load json
 
 function loadJSON(link) {
@@ -30,8 +36,18 @@ function loadJSON(link) {
 }
 
 function displayStudentlist() {
+  data.forEach(data => {
+    //const onedata = Object.create(oneData);
+    const names = data.fullname.trim().split(" ");
+
+    const firstName = names[0];
+    const middleName = names.slice(1, names.length);
+    const lastName = names[names.length - 1];
+  });
+
   data.forEach(displayStudents);
 }
+
 ///show students
 
 function displayStudents(data) {
@@ -56,6 +72,10 @@ function displayStudents(data) {
     clone.querySelector(".houseimg").src = "gryffindor.png";
     clone.querySelector(".post").classList.add("gryf-stud");
   }
+
+  clone.querySelector(".openModal").addEventListener("click", () => {
+    openModal(data);
+  });
   console.log(data);
 
   main.appendChild(clone);
@@ -165,8 +185,38 @@ function hideNone() {
   });
 }
 
-//sorting needs to be done still
+//sorting - needs to be done still
 
 //modal
+/*
+document.querySelector(".angelModal").addEventListener("click", openmodalAngel());
+
+function openmodalAngel() {
+  const modal = document.querySelector(".modal");
+  modal.classList.remove("inactive");
+}
+*/
+function openModal(data) {
+  const names = data.fullname.trim().split(" ");
+
+  const firstName = names[0];
+  const middleName = names.slice(1, names.length);
+  const lastName = names[names.length - 1];
+  const firstnamefirstletter = firstName.charAt(0).toLowerCase();
+  console.log(firstnamefirstletter);
+  console.log(lastName);
+
+  const modal = document.querySelector(".modal");
+  modal.classList.remove("inactive");
+  modal.querySelector("h2").textContent = data.fullname;
+  modal.querySelector(".studentPic").src = `images/${lastName}_${firstnamefirstletter}.png`;
+  modal.querySelector("#x").addEventListener("click", () => {
+    closeModal();
+  });
+  function closeModal() {
+    const modal = document.querySelector(".modal");
+    modal.classList.add("inactive");
+  }
+}
 
 loadJSON(link);

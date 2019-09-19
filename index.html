@@ -18,6 +18,7 @@
         </div>
         <h1 class="weird">1991 Hogwarts Student List</h1>
         <nav>
+        
 
             <a href="#" class="all">Show All</a>
             <a href="#" class="gryff">Gryffindor</a>
@@ -37,19 +38,32 @@
         </div>
     </header>
     <main id="details-main">
+            <article class="post slyth-stud">
+                    <h2 class="name">Angel Meyer</h1>
+                        <img src="slytherin.png" alt="hogwarts house crest" class="houseimg">
+                        <button class="angelModal inactive">More Info</button>
+                </article>
         <template>
             <article class="post">
                 <h2 class="name">Student Name</h1>
                     <img src="" alt="hogwarts house crest" class="houseimg">
-                    <button id="moreinf">More Info</button>
+                    <button class="openModal">More Info</button>
             </article>
         </template>
-        <article class="modal inactive">
-            <button id="closeBTN">X</button>
-            <h2 class="name">Student Name</h1>
-            <img src="" alt="hogwarts house crest" class="houseimg">
-            <img src="" alt="Picture of student" class="studentPic">
-        </article>
+        <div class="modal inactive">
+            <article class="modalArt inactive">
+                <button id="x">X</button>
+                <h2 class="name">Gerard Way UWU</h1>
+                    <img src="placeholder.jpg" alt="Picture of student" class="studentPic">
+                    <ul>
+                        <li><img src="slytherin.png" alt="hogwarts house crest" class="houseimg icon"></li>
+                        <li><img src="images/icons/blood-donation.png" alt="blood status symbol" class="bloodstatus icon"></li>
+                        <li><img src="images/icons/scores.png" alt="prefect" class="prefect icon"></li>
+                    </ul>
+                
+
+            </article>
+    </div>
     </main>
     <script src="js.js"></script>
 </body>
