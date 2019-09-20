@@ -11,32 +11,40 @@ const slytherinBtn = document.querySelector(".slyth");
 const gryfindorBtn = document.querySelector(".gryff");
 const allBtn = document.querySelector(".all");
 
-let data;
+let student;
+
+const fullList = [];
+let currentList = [];
 /*
 const names = data.fullname.split(" ");
 const firstName = names[0];
 const middleName = names.slice(1, names.length);
 const lastName = names[names.length - 1];
 */
+
 function start() {
   console.log("Fuckin' Ready");
+  //document.querySelector("#sorting").addEventListener("change", selectSorting);
+  hufflepuffBtn.addEventListener("click", HideforHuff);
+  ravenclawBtn.addEventListener("click", HideforRav);
+  slytherinBtn.addEventListener("click", HideforSlyth);
+  gryfindorBtn.addEventListener("click", HideforGryff);
+
   loadJSON();
 }
-
-//load json
 
 function loadJSON(link) {
   fetch(link)
     .then(e => e.json())
     .then(jsonData => {
-      data = jsonData;
+      student = jsonData;
 
       displayStudentlist();
     });
 }
 
 function displayStudentlist() {
-  data.forEach(displayStudents);
+  student.forEach(displayStudents);
 }
 
 ///show students
@@ -74,8 +82,6 @@ function displayStudents(data) {
 
 //filter students - condense this if you have time
 
-hufflepuffBtn.addEventListener("click", HideforHuff);
-
 function HideforHuff() {
   document.querySelectorAll(".gryf-stud").forEach(function(elHide) {
     elHide.style.display = "none";
@@ -90,8 +96,6 @@ function HideforHuff() {
     elHide.style.display = "block";
   });
 }
-
-ravenclawBtn.addEventListener("click", HideforRav);
 
 function HideforRav() {
   document.querySelectorAll(".gryf-stud").forEach(function(elHide) {
@@ -108,8 +112,6 @@ function HideforRav() {
   });
 }
 
-slytherinBtn.addEventListener("click", HideforSlyth);
-
 function HideforSlyth() {
   document.querySelectorAll(".gryf-stud").forEach(function(elHide) {
     elHide.style.display = "none";
@@ -124,25 +126,6 @@ function HideforSlyth() {
     elHide.style.display = "none";
   });
 }
-
-slytherinBtn.addEventListener("click", HideforSlyth);
-
-function HideforSlyth() {
-  document.querySelectorAll(".gryf-stud").forEach(function(elHide) {
-    elHide.style.display = "none";
-  });
-  document.querySelectorAll(".slyth-stud").forEach(function(elHide) {
-    elHide.style.display = "block";
-  });
-  document.querySelectorAll(".rav-stud").forEach(function(elHide) {
-    elHide.style.display = "none";
-  });
-  document.querySelectorAll(".huff-stud").forEach(function(elHide) {
-    elHide.style.display = "none";
-  });
-}
-
-gryfindorBtn.addEventListener("click", HideforGryff);
 
 function HideforGryff() {
   document.querySelectorAll(".gryf-stud").forEach(function(elHide) {
