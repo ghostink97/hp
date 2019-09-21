@@ -11,7 +11,7 @@ const slytherinBtn = document.querySelector(".slyth");
 const gryfindorBtn = document.querySelector(".gryff");
 const allBtn = document.querySelector(".all");
 
-let student;
+let students;
 
 const fullList = [];
 let currentList = [];
@@ -37,48 +37,107 @@ function loadJSON(link) {
   fetch(link)
     .then(e => e.json())
     .then(jsonData => {
-      student = jsonData;
-
-      displayStudentlist();
+      students = jsonData;
+      prepareObjects(jsonData);
     });
 }
 
-function displayStudentlist() {
-  student.forEach(displayStudents);
+/*function displayStudentlist() {
+  data.forEach(displayStudents);
+}*/
+
+function prepareObjects(jsonData) {
+  jsonData.forEach(jsonObject => {
+    const student = Object.create(Student);
+
+    const names = jsonObject.fullname.trim().split(" ");
+    //${name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()}
+    student.firstName = names[0];
+    if (names.length <= 2) {
+      student.middleName = "";
+    } else {
+      student.middleName = names[names.length - 2];
+    }
+    student.lastName = names[names.length - 1];
+    student.firstnamefirstletter = student.firstName.charAt(0).toLowerCase();
+    student.house = jsonObject.house.toUpperCase().trim();
+    student.fullname = jsonObject.fullname.trim().split(" ");
+
+    fullList.push(student);
+  });
+  console.log(fullList);
+  rebuildList();
+}
+
+function rebuildList(students) {
+  sortListBy("firstname");
+  displayList(fullList);
+}
+
+function sortListBy(prop) {
+  //currentList.sort((a, b) => (a[prop] > b[prop] ? 1 : -1)); // Don't copy this sorting function, it sucks ...
+  console.log("laterbuddy");
+}
+
+function displayList(students) {
+  students.forEach(displayStudents);
 }
 
 ///show students
 
-function displayStudents(data) {
-  console.log(data);
+function displayStudents(student) {
   const clone = template.cloneNode("true");
-  clone.querySelector(".name").textContent = data.fullname;
+  let firstName = student.firstName.trim();
+  let middleName = student.middleName.trim();
+  let lastName = student.lastName.trim();
+  let entireName =
+    firstName.charAt(0).toUpperCase() +
+    firstName.slice(1).toLowerCase() +
+    " " +
+    middleName.charAt(0).toUpperCase() +
+    middleName.slice(1).toLowerCase() +
+    " " +
+    lastName.charAt(0).toUpperCase() +
+    lastName.slice(1).toLowerCase();
+  if (firstName === "Ernest") {
+    entireName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() + " " + middleName + " " + lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+  }
+  console.log(student.middleName);
 
-  if (data.house.toUpperCase().trim() == "HUFFLEPUFF") {
+  clone.querySelector(".name").textContent = entireName;
+
+  if (student.house == "HUFFLEPUFF") {
     clone.querySelector(".houseimg").src = "hufflepuff.png";
     clone.querySelector(".post").classList.add("huff-stud");
   }
 
-  if (data.house.toUpperCase().trim() == "SLYTHERIN") {
+  if (student.house == "SLYTHERIN") {
     clone.querySelector(".houseimg").src = "slytherin.png";
     clone.querySelector(".post").classList.add("slyth-stud");
   }
-  if (data.house.toUpperCase().trim() == "RAVENCLAW") {
+  if (student.house == "RAVENCLAW") {
     clone.querySelector(".houseimg").src = "ravenclaw.png";
     clone.querySelector(".post").classList.add("rav-stud");
   }
-  if (data.house.toUpperCase().trim() == "GRYFFINDOR") {
+  if (student.house == "GRYFFINDOR") {
     clone.querySelector(".houseimg").src = "gryffindor.png";
     clone.querySelector(".post").classList.add("gryf-stud");
   }
 
   clone.querySelector(".openModal").addEventListener("click", () => {
-    openModal(data);
+    openModal(student);
   });
-  console.log(data);
+  console.log(student);
 
   main.appendChild(clone);
 }
+
+const Student = {
+  firstname: "-firstname-",
+  middlename: "-middlename-",
+  lastname: "-lastname-",
+  house: "-house-"
+};
 
 //filter students - condense this if you have time
 
@@ -170,31 +229,37 @@ function openmodalAngel() {
   modal.classList.remove("inactive");
 }
 */
-function openModal(data) {
-  const names = data.fullname.trim().split(" ");
-
-  const firstName = names[0];
-  const middleName = names.slice(1, names.length);
-  const lastName = names[names.length - 1];
-  const firstnamefirstletter = firstName.charAt(0).toLowerCase();
-  console.log(firstnamefirstletter);
-  console.log(lastName);
-
+function openModal(student) {
+  let firstName = student.firstName.trim();
+  let middleName = student.middleName.trim();
+  let lastName = student.lastName.trim();
+  let entireName =
+    firstName.charAt(0).toUpperCase() +
+    firstName.slice(1).toLowerCase() +
+    " " +
+    middleName.charAt(0).toUpperCase() +
+    middleName.slice(1).toLowerCase() +
+    " " +
+    lastName.charAt(0).toUpperCase() +
+    lastName.slice(1).toLowerCase();
+  if (firstName === "Ernest") {
+    entireName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() + " " + middleName + " " + lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+  }
   const modal = document.querySelector(".modal");
   modal.classList.remove("inactive");
-  modal.querySelector("h2").textContent = data.fullname;
-  modal.querySelector(".studentPic").src = `images/${lastName}_${firstnamefirstletter}.png`;
+  modal.querySelector("h2").textContent = entireName;
+  modal.querySelector(".studentPic").src = `images/${student.lastName}_${student.firstnamefirstletter}.png`;
   modal.querySelector("#x").addEventListener("click", () => {
     closeModal();
   });
 
-  if (data.house.toUpperCase().trim() === "GRYFFINDOR") {
+  if (student.house === "GRYFFINDOR") {
     modal.querySelector("#houseicon").src = "gryffindor.png";
-  } else if (data.house.toUpperCase().trim() === "SLYTHERIN") {
+  } else if (student.house === "SLYTHERIN") {
     modal.querySelector("#houseicon").src = "slytherin.png";
-  } else if (data.house.toUpperCase().trim() === "HUFFLEPUFF") {
+  } else if (student.house === "HUFFLEPUFF") {
     modal.querySelector("#houseicon").src = "hufflepuff.png";
-  } else if (data.house.toUpperCase().trim() === "RAVENCLAW") {
+  } else if (student.house === "RAVENCLAW") {
     modal.querySelector("#houseicon").src = "ravenclaw.png";
   }
 

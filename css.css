@@ -35,7 +35,7 @@ img {
   max-width: 50%;
 }
 
-#details-main {
+.studlist {
   margin-top: 1em;
   text-align: center;
   margin-bottom: 10em;
@@ -81,6 +81,26 @@ a {
   color: #d8c9ec;
   padding: 1em;
   border: none;
+  cursor: pointer;
+}
+
+.expell {
+  display: block;
+  text-align: center;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(20, 2, 53, 0.219);
+  color: #d8c9ec;
+  padding: 1em;
+  border: none;
+  margin-top: 1em;
+  cursor: pointer;
+}
+
+.expell:hover {
+  background-color: rgba(224, 41, 41, 0.486);
+  color: rgb(20, 2, 53);
 }
 
 .modal #x {
@@ -123,7 +143,7 @@ a {
 .modal ul {
   grid-area: 1/2;
   text-align: center;
-  width: 100%;
+  width: 50%;
   display: block;
   margin-right: 0;
   margin-top: 1em;
@@ -165,7 +185,7 @@ a {
     width: 70vw;
     margin: auto;
   }
-  #details-main {
+  .studlist {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 1em;

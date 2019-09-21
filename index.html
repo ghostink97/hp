@@ -38,20 +38,21 @@
         </div>
     </header>
     <main id="details-main">
-            <article class="post slyth-stud">
-                    <h2 class="name">Angel Meyer</h1>
-                        <img src="slytherin.png" alt="hogwarts house crest" class="houseimg">
-                        <button class="angelModal inactive">More Info</button>
-                </article>
+        <section class="studlist">
+ 
+        </section>
+        
         <template>
             <article class="post">
                 <h2 class="name">Student Name</h1>
                     <img src="" alt="hogwarts house crest" class="houseimg">
                     <button class="openModal">More Info</button>
-                    <input type="checkbox" name="Prefect" value="prefect" class="prefectbox"> Prefect<br>
+                    <button  data-action="remove" class="expell">Expell Student</button>
+                    <input type="checkbox" name="Prefect" id="prefect">Prefect
+                    <input type="checkbox" name="inq" id="inq">Inquisitor Squad
             </article>
         </template>
-        <div class="modal inactive">
+        <div class="modal inactive" id="modal">
             <article class="modalArt inactive">
                 <button id="x">X</button>
                 <h2 class="name">Gerard Way UWU</h1>
@@ -59,11 +60,9 @@
                     <ul>
                         <li><img src="slytherin.png" alt="hogwarts house crest" class="houseimg icon" id="houseicon"></li>
                         <li><img src="images/icons/blood-donation.png" alt="blood status symbol" class="bloodstatus icon"></li>
-                        <li><img src="images/icons/scores.png" alt="prefect" class="prefecticon icon inactive"></li>
-                        <li><img src="images/icons/letter-i (1).png" alt="inq" class="inqicon icon inactive"></li>
+                        <li><img src="images/icons/scores.png" alt="prefectimg" class="prefecticon inactive"></li>
+                        <li><img src="images/icons/letter-i (1).png" alt="inq" class="inqicon inactive"></li>
                     </ul>
-                
-
             </article>
     </div>
     </main>

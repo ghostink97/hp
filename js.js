@@ -2,7 +2,7 @@
 
 window.addEventListener("DOMContentLoaded", start);
 
-const main = document.querySelector("main");
+const studlistsect = document.querySelector(".studlist");
 const template = document.querySelector("template").content;
 const link = "http://petlatkea.dk/2019/hogwartsdata/students.json";
 const hufflepuffBtn = document.querySelector(".huff");
@@ -10,11 +10,15 @@ const ravenclawBtn = document.querySelector(".rav");
 const slytherinBtn = document.querySelector(".slyth");
 const gryfindorBtn = document.querySelector(".gryff");
 const allBtn = document.querySelector(".all");
+const bloodLink = "http://petlatkea.dk/2019/hogwartsdata/families.json";
 
 let students;
+let bloodData;
 
 const fullList = [];
 let currentList = [];
+let expellList = [];
+let prefectList = [];
 /*
 const names = data.fullname.split(" ");
 const firstName = names[0];
@@ -30,7 +34,8 @@ function start() {
   slytherinBtn.addEventListener("click", HideforSlyth);
   gryfindorBtn.addEventListener("click", HideforGryff);
 
-  loadJSON();
+  loadJSON(link);
+  loadBlood(bloodLink);
 }
 
 function loadJSON(link) {
@@ -42,9 +47,14 @@ function loadJSON(link) {
     });
 }
 
-/*function displayStudentlist() {
-  data.forEach(displayStudents);
-}*/
+function loadBlood(bloodLink) {
+  fetch(bloodLink)
+    .then(e => e.json())
+    .then(jsonBlood => {
+      bloodData = jsonBlood;
+      isthisapuresoul();
+    });
+}
 
 function prepareObjects(jsonData) {
   jsonData.forEach(jsonObject => {
@@ -62,24 +72,69 @@ function prepareObjects(jsonData) {
     student.firstnamefirstletter = student.firstName.charAt(0).toLowerCase();
     student.house = jsonObject.house.toUpperCase().trim();
     student.fullname = jsonObject.fullname.trim().split(" ");
+    student.UUID = uuidv4();
+    student.prefectStatus = false;
+    student.inquisitorStatus = false;
+    student.pureblood = true;
 
     fullList.push(student);
   });
-  console.log(fullList);
+  //console.log(fullList);
   rebuildList();
 }
 
-function rebuildList(students) {
-  sortListBy("firstname");
-  displayList(fullList);
+function isthisapuresoul() {
+  console.log(bloodData);
+
+  fullList.forEach(onestudent => {
+    if (bloodData.half.includes(onestudent.lastName)) {
+      onestudent.pureblood = false;
+    }
+    console.table(fullList);
+  });
+
+  /*fullList.forEach(oneStudent => {
+    //console.log(bloodData);
+  });*/
 }
 
-function sortListBy(prop) {
-  //currentList.sort((a, b) => (a[prop] > b[prop] ? 1 : -1)); // Don't copy this sorting function, it sucks ...
-  console.log("laterbuddy");
+function rebuildList() {
+  displayList(fullList);
+  setupListSorting();
+}
+
+function setupListSorting() {
+  let mySelect = document.getElementById("sorting");
+
+  mySelect.onchange = function() {
+    let x = document.getElementById("sorting").value;
+    if (x === "First Name") {
+      fullList.sort((a, b) => {
+        return a.firstName.localeCompare(b.firstName);
+      });
+      console.log(fullList);
+      displayList(fullList);
+    }
+    if (x === "House") {
+      fullList.sort((a, b) => {
+        return a.house.localeCompare(b.house);
+      });
+      console.log(fullList);
+      displayList(fullList);
+    }
+
+    if (x === "Last Name") {
+      fullList.sort((a, b) => {
+        return a.lastName.localeCompare(b.lastName);
+      });
+      console.log(fullList);
+      displayList(fullList);
+    }
+  };
 }
 
 function displayList(students) {
+  studlistsect.innerHTML = "";
   students.forEach(displayStudents);
 }
 
@@ -102,7 +157,7 @@ function displayStudents(student) {
   if (firstName === "Ernest") {
     entireName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() + " " + middleName + " " + lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
   }
-  console.log(student.middleName);
+  //console.log(student.middleName);
 
   clone.querySelector(".name").textContent = entireName;
 
@@ -124,19 +179,61 @@ function displayStudents(student) {
     clone.querySelector(".post").classList.add("gryf-stud");
   }
 
+  //clone.querySelector("[data-action=remove]").dataset.index = index;
+  clone.querySelector("[data-action=remove]").dataset.attribute = student.UUID;
+
+  let checkbox = clone.querySelector("#prefect");
+
+  checkbox.addEventListener("change", function() {
+    if (this.checked) {
+      console.log("is prefect");
+      student.prefectStatus = true;
+      console.table(fullList);
+    } else {
+      student.prefectStatus = false;
+      console.log("is not prefect");
+      console.table(fullList);
+    }
+  });
+
+  let othercheckbox = clone.querySelector("#inq");
+
+  othercheckbox.addEventListener("change", function() {
+    if (this.checked) {
+      console.log("check if slyth");
+      if (student.house === "SLYTHERIN") {
+        console.log("student is part of slytherin");
+        student.inquisitorStatus = true;
+      } else if (student.pureblood === true) {
+        console.log("student is pureblood");
+        student.inquisitorStatus = true;
+      } else {
+        console.log("nope");
+        alert("student must be pureblood or part of slytherin");
+      }
+    } else {
+      console.log("nope");
+      student.inquisitorStatus = false;
+    }
+  });
+
   clone.querySelector(".openModal").addEventListener("click", () => {
     openModal(student);
   });
-  console.log(student);
+  clone.querySelector(".expell").addEventListener("click", expellStudent);
 
-  main.appendChild(clone);
+  studlistsect.appendChild(clone);
 }
 
 const Student = {
   firstname: "-firstname-",
   middlename: "-middlename-",
   lastname: "-lastname-",
-  house: "-house-"
+  house: "-house-",
+  UUID: "-0",
+  prefectStatus: false,
+  inquisitorStatus: false,
+  pureblood: true
 };
 
 //filter students - condense this if you have time
@@ -218,17 +315,6 @@ function hideNone() {
   });
 }
 
-//sorting - needs to be done still
-
-//modal
-/*
-document.querySelector(".angelModal").addEventListener("click", openmodalAngel());
-
-function openmodalAngel() {
-  const modal = document.querySelector(".modal");
-  modal.classList.remove("inactive");
-}
-*/
 function openModal(student) {
   let firstName = student.firstName.trim();
   let middleName = student.middleName.trim();
@@ -245,10 +331,27 @@ function openModal(student) {
   if (firstName === "Ernest") {
     entireName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() + " " + middleName + " " + lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
   }
-  const modal = document.querySelector(".modal");
+  let modal = document.querySelector(".modal");
   modal.classList.remove("inactive");
   modal.querySelector("h2").textContent = entireName;
   modal.querySelector(".studentPic").src = `images/${student.lastName}_${student.firstnamefirstletter}.png`;
+  if (student.prefectStatus === true) {
+    modal.querySelector(".prefecticon").classList.remove("inactive");
+  } else {
+    modal.querySelector(".prefecticon").classList.add("inactive");
+  }
+  if (student.inquisitorStatus === true) {
+    modal.querySelector(".inqicon").classList.remove("inactive");
+  } else {
+    modal.querySelector(".inqicon").classList.add("inactive");
+  }
+
+  if (student.pureblood === false) {
+    modal.querySelector(".bloodstatus").src = "images/icons/fakeBlood.png";
+  } else if (student.pureblood === true) {
+    modal.querySelector(".bloodstatus").src = "images/icons/blood-donation.png";
+  }
+
   modal.querySelector("#x").addEventListener("click", () => {
     closeModal();
   });
@@ -263,22 +366,40 @@ function openModal(student) {
     modal.querySelector("#houseicon").src = "ravenclaw.png";
   }
 
-  //checkbox eventlistener code inspired by stackoverflow ()
-  /* let checkboxPref = document.querySelector(".prefectbox");
-
-  checkboxPref.addEventListener("change", function() {
-    if (this.checked) {
-      modal.querySelector(".prefecticon").classList.remove("inactive");
-    } else {
-      console.log("is not checked");
-      modal.querySelector(".prefecticon").classList.add("inactive");
-    }
-  });*/
-
   function closeModal() {
     const modal = document.querySelector(".modal");
     modal.classList.add("inactive");
   }
 }
 
-loadJSON(link);
+//const expellBtn = document.querySelector(".expell");
+
+function expellStudent() {
+  const element = event.target;
+
+  if (element.dataset.action === "remove") {
+    element.parentElement.remove();
+  }
+
+  const UUID = element.dataset.attribute;
+  const indexoffullList = fullList.findIndex(studentUUID);
+  function studentUUID(student) {
+    if (student.UUID === UUID) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  fullList.splice(indexoffullList, 1);
+  ///expellList.push(deletedElement[0]); or something like that?
+  console.log(expellList);
+  //console.table(fullList);
+}
+//stack overflow content below (https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript#answer-2117523)
+
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
+}
+
+console.log(uuidv4());
