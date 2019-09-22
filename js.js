@@ -19,16 +19,10 @@ const fullList = [];
 let currentList = [];
 let expellList = [];
 let prefectList = [];
-/*
-const names = data.fullname.split(" ");
-const firstName = names[0];
-const middleName = names.slice(1, names.length);
-const lastName = names[names.length - 1];
-*/
 
 function start() {
   console.log("Fuckin' Ready");
-  //document.querySelector("#sorting").addEventListener("change", selectSorting);
+
   hufflepuffBtn.addEventListener("click", HideforHuff);
   ravenclawBtn.addEventListener("click", HideforRav);
   slytherinBtn.addEventListener("click", HideforSlyth);
@@ -61,7 +55,7 @@ function prepareObjects(jsonData) {
     const student = Object.create(Student);
 
     const names = jsonObject.fullname.trim().split(" ");
-    //${name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()}
+
     student.firstName = names[0];
     if (names.length <= 2) {
       student.middleName = "";
@@ -90,12 +84,8 @@ function isthisapuresoul() {
     if (bloodData.half.includes(onestudent.lastName)) {
       onestudent.pureblood = false;
     }
-    console.table(fullList);
+    //console.table(fullList);
   });
-
-  /*fullList.forEach(oneStudent => {
-    //console.log(bloodData);
-  });*/
 }
 
 function rebuildList() {
@@ -179,7 +169,6 @@ function displayStudents(student) {
     clone.querySelector(".post").classList.add("gryf-stud");
   }
 
-  //clone.querySelector("[data-action=remove]").dataset.index = index;
   clone.querySelector("[data-action=remove]").dataset.attribute = student.UUID;
 
   let checkbox = clone.querySelector("#prefect");
@@ -188,11 +177,11 @@ function displayStudents(student) {
     if (this.checked) {
       console.log("is prefect");
       student.prefectStatus = true;
-      console.table(fullList);
+      //console.table(fullList);
     } else {
       student.prefectStatus = false;
       console.log("is not prefect");
-      console.table(fullList);
+      //console.table(fullList);
     }
   });
 
@@ -209,7 +198,7 @@ function displayStudents(student) {
         student.inquisitorStatus = true;
       } else {
         console.log("nope");
-        alert("student must be pureblood or part of slytherin");
+        alert("Student must be PUREBLOODED or part of HOUSE SLYTHERIN");
       }
     } else {
       console.log("nope");
@@ -372,8 +361,6 @@ function openModal(student) {
   }
 }
 
-//const expellBtn = document.querySelector(".expell");
-
 function expellStudent() {
   const element = event.target;
 
@@ -394,7 +381,6 @@ function expellStudent() {
   fullList.splice(indexoffullList, 1);
   ///expellList.push(deletedElement[0]); or something like that?
   console.log(expellList);
-  //console.table(fullList);
 }
 //stack overflow content below (https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript#answer-2117523)
 
@@ -403,3 +389,27 @@ function uuidv4() {
 }
 
 console.log(uuidv4());
+
+//this was also taken from stack overflow https://stackoverflow.com/questions/16973240/link-in-alert-boxes-javascript
+document.querySelector(".expellangel").addEventListener("click", dontYouDare);
+
+function dontYouDare() {
+  if (window.confirm("Click OK, I dare you")) {
+    window.location.href = "https://www.youtube.com/watch?v=LPpM8Z5byzs";
+  }
+}
+
+document.querySelector(".expellangel").addEventListener("click", dontYouDare);
+
+document.querySelector(".angelmodal").addEventListener("click", openangelmodal);
+
+function openangelmodal() {
+  let modal = document.querySelector(".modal");
+  modal.classList.remove("inactive");
+  modal.querySelector("h2").textContent = "Angel Ezra Meyer";
+  modal.querySelector(".studentPic").src = `images/angel.png`;
+  modal.querySelector(".prefecticon").classList.remove("inactive");
+  modal.querySelector(".inqicon").classList.remove("inactive");
+  modal.querySelector(".houseimg").src = "slytherin.png";
+  modal.querySelector(".bloodstatus").src = "images/icons/blood-donation.png";
+}

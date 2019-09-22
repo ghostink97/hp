@@ -41,6 +41,14 @@ img {
   margin-bottom: 10em;
 }
 
+.angelstudlist {
+  margin-top: 1em;
+  text-align: center;
+  margin-bottom: 10em;
+  position: absolute;
+  margin-top: -9em;
+  padding-bottom: 5em;
+}
 .houseimg {
   width: 20%;
 }
@@ -186,6 +194,11 @@ a {
     margin: auto;
   }
   .studlist {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1em;
+  }
+  .angelstudlist {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 1em;
