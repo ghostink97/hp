@@ -1,0 +1,23 @@
+{
+  "name": "hp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "minify-js": "minify js.js > js.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ourangelofsorrows/hp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ourangelofsorrows/hp/issues"
+  },
+  "homepage": "https://github.com/ourangelofsorrows/hp#readme",
+  "devDependencies": {
+    "minify": "^4.1.3"
+  }
+}
